@@ -1,0 +1,11 @@
+# Powershell Script to locate Unix boxes joined to Active Directory
+# which have been inactive for 90 days.
+#
+#
+Import-Module activedirectory
+[int]$ComputerPasswordAgeDays = 90
+IF ((test-path “c:\temp”) -eq $False) { md “c:\temp” }
+$ExportFile = “c:\temp\InactiveUnix.csv”
+$ComputerStaleDate = (Get-Date).AddDays(-$ComputerPasswordAgeDays)
+$InactiveUnix = Get-ADComputer -filter { (passwordLastSet -le $ComputerStaleDate) -and (OperatingSystem -notlike “*Windows”) } -properties Name, DistinguishedName, OperatingSystem,OperatingSystemServicePack, passwordLastSet,LastLogonDate,Description
+$InactiveUnix | export-csv $ExportFile
