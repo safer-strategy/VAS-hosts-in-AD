@@ -15,6 +15,10 @@ NUMUSERS=`/opt/quest/bin/vastool -u host/ \
 NUMSYS=`/opt/quest/bin/vastool -u host/ \
   search -q '(&(objectCategory=Computer)(!(operatingSystem=Windows*)))' name \
   | wc -l`
+NUMVAS=`/opt/quest/bin/vastool -u host/ \
+  search -q '(&(objectCategory=Computer)(!(operatingSystem=Windows*)))' name operatingSystemVersion \
+  | grep -E "QAS|VAS" | wc -l`
 
 echo "Number of QAS Enabled Users:         $NUMUSERS"
-echo "Number of QAS Installed Unix Hosts:  $NUMSYS"
+echo "Number of Non-Windows Hosts:  $NUMSYS"
+echo "Number of QAS/VAS Hosts:  $NUMVAS"
